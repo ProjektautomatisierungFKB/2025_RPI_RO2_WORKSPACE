@@ -1,0 +1,390 @@
+[
+    {
+        "id": "76bde4bd4257e93b",
+        "type": "tab",
+        "label": "MQTT File Switcheru",
+        "disabled": false,
+        "info": "File is written when Input A or Input B changes, using the Switch Variable to decide which message to write."
+    },
+    {
+        "id": "d976a2db31fb922a",
+        "type": "mqtt in",
+        "z": "76bde4bd4257e93b",
+        "name": "Input Message A (Trigger)",
+        "topic": "car/cmd_vel",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "a5a1eae5ac7829a9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 40,
+        "wires": [
+            [
+                "0c4750c36e7a90c5"
+            ]
+        ]
+    },
+    {
+        "id": "fa3dda4a5b7bc15c",
+        "type": "change",
+        "z": "76bde4bd4257e93b",
+        "name": "Store A & Get Switch",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message_a",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "switch_val",
+                "pt": "msg",
+                "to": "active_input",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 900,
+        "y": 80,
+        "wires": [
+            [
+                "4886e4b2aa0f3a38"
+            ]
+        ]
+    },
+    {
+        "id": "bdbb6653b0475c26",
+        "type": "mqtt in",
+        "z": "76bde4bd4257e93b",
+        "name": "Input Message B (Trigger)",
+        "topic": "car/cam_vel",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "a5a1eae5ac7829a9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "58995ccdcbd51036"
+            ]
+        ]
+    },
+    {
+        "id": "58995ccdcbd51036",
+        "type": "change",
+        "z": "76bde4bd4257e93b",
+        "name": "Store B & Get Switch",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message_b",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "switch_val",
+                "pt": "msg",
+                "to": "active_input",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 100,
+        "wires": [
+            [
+                "4886e4b2aa0f3a38"
+            ]
+        ]
+    },
+    {
+        "id": "e25a7b08d60ce6fb",
+        "type": "mqtt in",
+        "z": "76bde4bd4257e93b",
+        "name": "Switch Variable (0/1) - Store Only",
+        "topic": "car/camera_mode",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "a5a1eae5ac7829a9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 160,
+        "wires": [
+            [
+                "df5bbe4603add0b3"
+            ]
+        ]
+    },
+    {
+        "id": "df5bbe4603add0b3",
+        "type": "change",
+        "z": "76bde4bd4257e93b",
+        "name": "Store flow.active_input",
+        "rules": [
+            {
+                "t": "set",
+                "p": "active_input",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4886e4b2aa0f3a38",
+        "type": "switch",
+        "z": "76bde4bd4257e93b",
+        "name": "Switch on msg.switch_val (0/1)",
+        "property": "switch_val",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1150,
+        "y": 120,
+        "wires": [
+            [
+                "7347b7995b1fa4bf"
+            ],
+            [
+                "1ab7c749ee9afaa5"
+            ]
+        ]
+    },
+    {
+        "id": "7347b7995b1fa4bf",
+        "type": "change",
+        "z": "76bde4bd4257e93b",
+        "name": "Write Message A (if 0)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "message_a",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1400,
+        "y": 80,
+        "wires": [
+            [
+                "a0b6b1769b0472d2"
+            ]
+        ]
+    },
+    {
+        "id": "1ab7c749ee9afaa5",
+        "type": "change",
+        "z": "76bde4bd4257e93b",
+        "name": "Write Message B (if 1)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "message_b",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1400,
+        "y": 160,
+        "wires": [
+            [
+                "a0b6b1769b0472d2"
+            ]
+        ]
+    },
+    {
+        "id": "a0b6b1769b0472d2",
+        "type": "file",
+        "z": "76bde4bd4257e93b",
+        "name": "",
+        "filename": "/home/pi/node_red_output/control_data.json",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1710,
+        "y": 40,
+        "wires": [
+            [
+                "3105dd20c924ca90"
+            ]
+        ]
+    },
+    {
+        "id": "3105dd20c924ca90",
+        "type": "file in",
+        "z": "76bde4bd4257e93b",
+        "name": "",
+        "filename": "/home/pi/node_red_output/control_data.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 2070,
+        "y": 40,
+        "wires": [
+            [
+                "c9d6fc8f6ba44719"
+            ]
+        ]
+    },
+    {
+        "id": "c9d6fc8f6ba44719",
+        "type": "debug",
+        "z": "76bde4bd4257e93b",
+        "name": "debug_cmd",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2330,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "0c4750c36e7a90c5",
+        "type": "function",
+        "z": "76bde4bd4257e93b",
+        "name": "Parse Values into control words.",
+        "func": "// Get the input data from the message payload\nconst lx = msg.payload.lx; // Forward/Backward\nconst ly = msg.payload.ly; // Left/Right strafing\nconst az = msg.payload.az; // Right/Left turning\n\nlet controlWord = 0; // Default is 0 (Stop)\n\n// Define a small tolerance for \"zero\" to avoid jitter from analog inputs\nconst tolerance = 0.1;\n\n// --- STEP 1: Check for Stop (controlWord = 0) ---\n// If all primary axes are within the tolerance of 0, it means stop.\nif (Math.abs(lx) < tolerance && Math.abs(ly) < tolerance && Math.abs(az) < tolerance) {\n    controlWord = 0;\n}\n// --- STEP 2: Handle Turning (controlWord = 5 or 6) ---\n// Turning has priority because it often involves the driver wanting to rotate in place.\nelse if (az > tolerance) {\n    // az > 0 means Right Turn\n    controlWord = 5; // Right Turn\n} else if (az < -tolerance) {\n    // az < 0 means Left Turn\n    controlWord = 6; // Left Turn\n}\n// --- STEP 3: Handle Combined Forward/Backward and Strafing (controlWord = 1, 2, 7, 8) ---\n// Note: This logic assumes strafing (ly) will be prioritized for combined movements, \n// and that standard \"left/right\" (3/4) is only for pure strafing.\nelse if (Math.abs(lx) >= tolerance) {\n    // Forward or Backward Movement\n\n    if (lx > tolerance) {\n        // Forward (lx > 0)\n\n        if (ly > tolerance) {\n            // Forward Right (lx > 0 and ly > 0)\n            controlWord = 7; // Forward Right\n        } else if (ly < -tolerance) {\n            // Forward Left (lx > 0 and ly < 0)\n            controlWord = 8; // Forward Left\n        } else {\n            // Pure Forward\n            controlWord = 1; // Forward\n        }\n\n    } else { // lx < -tolerance (Backward)\n\n        // **Important:** For this simple control, we'll generally prioritize the forward/turn movements.\n        // If the driver is trying to go backward, we'll simplify and just send \"Backward\" (2).\n        // This prevents complex states like \"Backward Right\" unless specifically needed.\n        controlWord = 2; // Backward\n    }\n\n}\n// --- STEP 4: Handle Pure Strafing (controlWord = 3 or 4) ---\n// This is the fallback for when there is NO forward/backward/turning movement.\nelse if (Math.abs(ly) >= tolerance) {\n    if (ly > tolerance) {\n        // Pure Right Strafe (ly > 0)\n        controlWord = 4; // Right Strafe\n    } else {\n        // Pure Left Strafe (ly < 0)\n        controlWord = 3; // Left Strafe\n    }\n}\n\n\n// Output the new control word\nmsg.payload = controlWord;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 40,
+        "wires": [
+            [
+                "2604c7b4bdde7ae0"
+            ]
+        ]
+    },
+    {
+        "id": "2604c7b4bdde7ae0",
+        "type": "switch",
+        "z": "76bde4bd4257e93b",
+        "name": "Stop (0) Ignores commands",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 660,
+        "y": 40,
+        "wires": [
+            [
+                "a0b6b1769b0472d2"
+            ],
+            [
+                "fa3dda4a5b7bc15c"
+            ]
+        ]
+    },
+    {
+        "id": "a5a1eae5ac7829a9",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt://85.215.169.239",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
